@@ -9,6 +9,11 @@
     <conf name="source" />
   </configurations>
 
+  <publications>
+  	<artifact name="pentaho-hdfs-vfs" type="jar"  conf="default" ext="jar"/>
+   	<artifact name="pentaho-hdfs-vfs" m:classifier="sources" type="source" ext="jar" conf="source"/>
+  </publications>
+
   <dependencies defaultconf="default->default">
 
     <!--  external dependencies -->
