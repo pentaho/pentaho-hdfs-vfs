@@ -61,7 +61,6 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
   }
 
   protected FileType doGetType() throws Exception {
-
     FileStatus status = null;
     try {
       status = hdfs.getFileStatus(new Path(getName().getPath()));
@@ -78,6 +77,26 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
     }
   }
 
+  public void doCreateFolder() throws Exception {
+    hdfs.mkdirs(new Path(getName().getPath()));
+  }
+
+  public void doDelete() throws Exception {
+    hdfs.delete(new Path(getName().getPath()), true);
+  }
+
+  protected void doRename(FileObject newfile) throws Exception {
+    hdfs.rename(new Path(getName().getPath()), new Path(newfile.getName().getPath()));
+  }
+
+  protected long doGetLastModifiedTime() throws Exception {
+    return hdfs.getFileStatus(new Path(getName().getPath())).getModificationTime();
+  }
+
+  protected void doSetLastModifiedTime(long modtime) throws Exception {
+    hdfs.setTimes(new Path(getName().getPath()), modtime, System.currentTimeMillis());
+  }
+  
   protected String[] doListChildren() throws Exception {
     FileStatus[] statusList = hdfs.listStatus(new Path(getName().getPath()));
     String[] children = new String[statusList.length];

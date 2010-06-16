@@ -18,8 +18,12 @@
   <dependencies defaultconf="default->default">
 
     <!--  external dependencies -->
-	<dependency org="commons-vfs" name="commons-vfs" rev="1.0" transitive="true" />
+   	<dependency org="commons-vfs" name="commons-vfs" rev="1.0" transitive="true" />
     <dependency org="org.apache.hadoop" name="hadoop-core" rev="0.20.2" transitive="true" />
+
+	<!-- test -->
+    <dependency org="commons-io" name="commons-io" rev="1.4" conf="test->default"/>
+
 
   </dependencies>
 </ivy-module>
