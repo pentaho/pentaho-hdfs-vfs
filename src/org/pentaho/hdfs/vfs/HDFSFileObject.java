@@ -17,7 +17,6 @@
  */
 package org.pentaho.hdfs.vfs;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -64,8 +63,9 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
     FileStatus status = null;
     try {
       status = hdfs.getFileStatus(new Path(getName().getPath()));
-    } catch (IOException ioe) {
-      // imaginary (doesn't exist or not hooked up yet)
+    } catch (Exception ex) {
+      System.out.println("Exception during doGetType for " + getName().getPath());
+      ex.printStackTrace();
     }
 
     if (status == null) {
@@ -96,7 +96,7 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
   protected void doSetLastModifiedTime(long modtime) throws Exception {
     hdfs.setTimes(new Path(getName().getPath()), modtime, System.currentTimeMillis());
   }
-  
+
   protected String[] doListChildren() throws Exception {
     FileStatus[] statusList = hdfs.listStatus(new Path(getName().getPath()));
     String[] children = new String[statusList.length];

@@ -17,7 +17,6 @@
  */
 package org.pentaho.hdfs.vfs;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import org.apache.commons.vfs.FileName;
@@ -53,7 +52,9 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
       conf.set("fs.default.name", url);
       try {
         hdfs = org.apache.hadoop.fs.FileSystem.get(conf);
-      } catch (IOException e) {
+      } catch (Throwable t) {
+        System.out.println("Could not getHDFSFileSystem()!");
+        t.printStackTrace();
       }
     }
     return hdfs;
