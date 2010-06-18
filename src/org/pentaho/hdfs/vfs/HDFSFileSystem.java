@@ -53,7 +53,7 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
       try {
         hdfs = org.apache.hadoop.fs.FileSystem.get(conf);
       } catch (Throwable t) {
-        System.out.println("Could not getHDFSFileSystem()!");
+        System.out.println("Could not getHDFSFileSystem() for " + url);
         t.printStackTrace();
       }
     }
