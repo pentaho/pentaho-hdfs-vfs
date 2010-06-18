@@ -17,7 +17,7 @@
  */
 package org.pentaho.hdfs.vfs;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -64,7 +64,7 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
     FileStatus status = null;
     try {
       status = hdfs.getFileStatus(new Path(getName().getPath()));
-    } catch (FileNotFoundException fnfe) {
+    } catch (IOException ioe) {
       // imaginary (doesn't exist or not hooked up yet)
     }
 
