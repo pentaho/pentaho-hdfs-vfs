@@ -64,8 +64,6 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
     try {
       status = hdfs.getFileStatus(new Path(getName().getPath()));
     } catch (Exception ex) {
-      System.out.println("Exception during doGetType for " + getName().getPath());
-      ex.printStackTrace();
     }
 
     if (status == null) {
