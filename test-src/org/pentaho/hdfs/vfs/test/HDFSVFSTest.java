@@ -22,51 +22,48 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.VFS;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.pentaho.hdfs.vfs.HDFSFileSystem;
 
 public class HDFSVFSTest {
 
   private static FileSystemManager fsManager;
   private static String HELLO_HADOOP_STR = "Hello Hadoop VFS";
 
-  private static String hostname = "192.168.1.193";
-  private static String port = "9000";
-  private static String username = "username";
-  private static String password = "password";
+  private static MiniDFSCluster cluster = null;
 
   @BeforeClass
   public static void beforeClass() throws IOException {
     fsManager = VFS.getManager();
-    Properties settings = new Properties();
-    settings.load(HDFSVFSTest.class.getResourceAsStream("/test-settings.properties"));
-    hostname = settings.getProperty("hostname", hostname);
-    port = settings.getProperty("port", port);
-    username = settings.getProperty("username", username);
-    password = settings.getProperty("password", password);
+    final Configuration dfsConf = new Configuration();
+    dfsConf.set("hadoop.proxyuser." + System.getProperty("user.name") + ".users", "users");
+    dfsConf.set("hadoop.proxyuser.users.ip-addresses", "localhost");
+    dfsConf.set("hadoop.proxyuser." + System.getProperty("user.name") + ".ip-addresses", "localhost");
+    cluster = new MiniDFSCluster(dfsConf, 2, true, null);
+    cluster.waitActive();
+
+    FileSystem hdfs = cluster.getFileSystem();
+    HDFSFileSystem.setMockHDFSFileSystem(hdfs);
   }
 
   @AfterClass
   public static void afterClass() throws Exception {
+    cluster.shutdown();
   }
 
   public static String buildHDFSURL(String path) {
-    // hdfs://myusername:mypassword@somehost/pub/downloads/somefile.tgz
-    if (!path.startsWith("/")) {
-      path = "/" + path;
-    }
-    if (username != null && !"".equals(username)) {
-      return "hdfs://" + username + ":" + password + "@" + hostname + ":" + port + path;
-    }
-    return "hdfs://" + hostname + ":" + port + path;
+    return "hdfs://localhost" + path;
   }
 
   @Test
@@ -171,7 +168,7 @@ public class HDFSVFSTest {
     assertEquals(FileType.FILE, renamedFile.getType());
     assertEquals(true, renamedFile.delete());
   }
-  
+
   @Test
   public void listChildren() throws Exception {
     assertNotNull("FileSystemManager is null", fsManager);

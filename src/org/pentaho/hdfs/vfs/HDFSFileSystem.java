@@ -29,6 +29,7 @@ import org.apache.hadoop.conf.Configuration;
 
 public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
 
+  private static org.apache.hadoop.fs.FileSystem mockHdfs;
   private org.apache.hadoop.fs.FileSystem hdfs;
 
   protected HDFSFileSystem(final FileName rootName, final FileSystemOptions fileSystemOptions) {
@@ -44,7 +45,21 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
     return new HDFSFileObject(name, this);
   }
 
+  
+  /**
+   * Use of this method is for unit testing, it allows us to poke in a test filesystem without
+   * interfering with any other objects in the vfs system
+   * 
+   * @param hdfs the mock file system
+   */
+  public static void setMockHDFSFileSystem(org.apache.hadoop.fs.FileSystem hdfs) {
+    mockHdfs = hdfs;
+  }
+  
   public org.apache.hadoop.fs.FileSystem getHDFSFileSystem() {
+    if (mockHdfs != null) {
+      return mockHdfs;
+    }
     if (hdfs == null) {
       Configuration conf = new Configuration();
       GenericFileName genericFileName = (GenericFileName) getRootName();
