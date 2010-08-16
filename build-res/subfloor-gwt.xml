@@ -27,8 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <!--===========================================================================
     == SUBFLOOR-GWT ==
     
-    $Rev: 65 $
-    $Date: 2009-05-26 14:56:40 -0400 (Tue, 26 May 2009) $
+    $Rev: 75 $
+    $Date: 2009-09-10 10:19:34 -0400 (Thu, 10 Sep 2009) $
     Project Home: http://code.google.com/p/subfloor/
     
     Provides default targets for building GWT applications.
@@ -46,14 +46,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <property name="gwt.output.dir"
             value="${bin.dir}/gwt/output"
             description="Base directory that holds all gwt generated files" />
-  <property name="gwt-dev.revision" value="1.7.1" description="The release of GWT-dev to download and install" />
+  <property name="gwt-dev.revision" value="1.6.4" description="The release of GWT-dev to download and install" />
   <property name="gwt-log-level" value="INFO" description="The log level for GWT Compile" />
   <property name="gwt-style" value="OBF" description="Style in which javascript should be generated, options include OBF[uscated], PRETTY, and DETAILED"/>
+	<property name="gwtdevlib.dir"
+	            value="${basedir}/gwtdevlib"
+	            description="Location of the libraries needed to develop GWT" />
   <property name="gwt-dev.zipfile"
-            value="${devlib.dir}/gwt-dev-libs.zip"
+            value="${gwtdevlib.dir}/gwt-dev-libs.zip"
             description="The download location of the GWT-dev zip file" />
   <property name="gwt-dev.jarfile"
-            value="${devlib.dir}/gwt-dev-${gwt-dev.revision}.jar"
+            value="${gwtdevlib.dir}/gwt-dev-${gwt-dev.revision}.jar"
             description="The download location of the GWT-dev jar file" />
   <property name="codegenlib.dir"
             value="${basedir}/codegen-lib"
@@ -63,10 +66,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <property name="gwt-compile.maxstack" value="1024k" description="vm stack size setting" />
 
 	<path id="classpath">
+	<fileset dir="${devlib.dir}">
+		<include name="*.jar" />
+	</fileset>
     <fileset dir="${codegenlib.dir}">
-      <include name="*.jar" />
-    </fileset>
-    <fileset dir="${devlib.dir}">
       <include name="*.jar" />
     </fileset>
     <fileset dir="${lib.dir}">
@@ -75,6 +78,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <pathelement path="${src.dir}" />
   </path>	
 	
+  <!-- Setup the classpath used for testing -->
+  <path id="test.classpath">
+    <fileset dir="${devlib.dir}">
+      <include name="*" />
+    </fileset>
+    <fileset dir="${lib.dir}">
+      <include name="*.jar" />
+    </fileset>
+    <fileset dir="${testlib.dir}">
+      <include name="*.jar" />
+    </fileset>
+  	<fileset dir="${gwtdevlib.dir}">
+  	  <include name="*.jar" />
+  	</fileset>
+    <dirset dir="${classes.dir}" />
+    <dirset dir="${testclasses.dir}" />
+  </path>
   <!--=======================================================================
 	    init (override)
 	    
@@ -190,12 +210,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       Downloads and installs gwt-dev jars and native libraries
       ====================================================================-->
   <target name="install-gwt-dev" depends="gwt-dev.download" description="Installs gwt-dev jar and native libraries">
-    <unzip src="${gwt-dev.zipfile}" dest="${devlib.dir}" />
+    <unzip src="${gwt-dev.zipfile}" dest="${gwtdevlib.dir}" />
     <delete file="${gwt-dev.zipfile}" />
 
     <echo>
       *************************************************************************************************
-      ** Gwt dev files have been installed to ${devlib.dir}.
+      ** Gwt dev files have been installed to ${gwtdevlib.dir}.
       ** Make sure ${gwt-dev.jarfile} 
       ** appears before other jars in your IDE's classpath, 
       ** otherwise running in hosted mode may fail.
