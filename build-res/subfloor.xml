@@ -27,8 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <!--===========================================================================
     == SUBFLOOR ==
     
-    $Rev: 101 $
-    $Date: 2009-12-17 13:22:13 -0500 (Thu, 17 Dec 2009) $
+    $Rev: 103 $
+    $Date: 2010-08-23 15:56:28 -0400 (Mon, 23 Aug 2010) $
     Project Home: http://code.google.com/p/subfloor/
     
     This file contains the default implementation of the ant tasks to 
@@ -354,8 +354,8 @@ TYPICAL TARGET SEQUENCE
     <fileset dir="${testlib.dir}">
       <include name="*.jar" />
     </fileset>
-    <dirset dir="${classes.dir}" />
     <dirset dir="${testclasses.dir}" />
+    <dirset dir="${classes.dir}" />
   </path>
 
   <!--=======================================================================
