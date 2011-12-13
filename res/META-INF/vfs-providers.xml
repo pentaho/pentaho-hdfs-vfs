@@ -3,4 +3,9 @@
     <scheme name="hdfs"/>
     <if-available class-name="org.apache.hadoop.fs.FileSystem"/>
   </provider>
+
+  <provider class-name="org.pentaho.hdfs.vfs.MapRFileProvider">
+    <scheme name="maprfs"/>
+    <if-available class-name="com.mapr.fs.MapRFileSystem"/>
+  </provider>
 </providers>

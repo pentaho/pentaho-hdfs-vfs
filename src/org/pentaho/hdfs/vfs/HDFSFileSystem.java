@@ -19,10 +19,7 @@ package org.pentaho.hdfs.vfs;
 
 import java.util.Collection;
 
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystem;
-import org.apache.commons.vfs.FileSystemOptions;
+import org.apache.commons.vfs.*;
 import org.apache.commons.vfs.provider.AbstractFileSystem;
 import org.apache.commons.vfs.provider.GenericFileName;
 import org.apache.hadoop.conf.Configuration;
@@ -56,7 +53,7 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
     mockHdfs = hdfs;
   }
   
-  public org.apache.hadoop.fs.FileSystem getHDFSFileSystem() {
+  public org.apache.hadoop.fs.FileSystem getHDFSFileSystem() throws FileSystemException {
     if (mockHdfs != null) {
       return mockHdfs;
     }
@@ -71,8 +68,7 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
       try {
         hdfs = org.apache.hadoop.fs.FileSystem.get(conf);
       } catch (Throwable t) {
-        System.out.println("Could not getHDFSFileSystem() for " + url);
-        t.printStackTrace();
+        throw new FileSystemException("Could not getHDFSFileSystem() for " + url, t);
       }
     }
     return hdfs;
