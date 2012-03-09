@@ -62,6 +62,10 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
       GenericFileName genericFileName = (GenericFileName) getRootName();
       String url = "hdfs://" + genericFileName.getHostName() + ":" + genericFileName.getPort();
       conf.set("fs.default.name", url);
+
+      String replication = System.getProperty("dfs.replication", "3");
+      conf.set("dfs.replication", replication);
+
       if (genericFileName.getUserName() != null && !"".equals(genericFileName.getUserName())) {
         conf.set("hadoop.job.ugi", genericFileName.getUserName() + ", " + genericFileName.getPassword());
       }
