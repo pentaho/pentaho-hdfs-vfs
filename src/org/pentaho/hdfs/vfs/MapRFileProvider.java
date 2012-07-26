@@ -11,6 +11,11 @@ import org.apache.commons.vfs.FileSystemOptions;
  * @author Jordan Ganoff (jganoff@pentaho.com)
  */
 public class MapRFileProvider extends HDFSFileProvider {
+  /**
+   * The scheme this provider was designed to support
+   */
+  public static final String SCHEME = "maprfs";
+
   public MapRFileProvider() {
     setFileNameParser(new MapRFileNameParser());
   }
