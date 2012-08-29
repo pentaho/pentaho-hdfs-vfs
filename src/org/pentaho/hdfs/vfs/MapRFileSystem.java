@@ -23,7 +23,7 @@ public class MapRFileSystem extends HDFSFileSystem implements FileSystem {
   public org.apache.hadoop.fs.FileSystem getHDFSFileSystem() throws FileSystemException {
     if (fs == null) {
       Configuration conf = new Configuration();
-      conf.set("fs.maprfs.impl", "com.mapr.fs.MapRFileSystem");
+      conf.set("fs.maprfs.impl", MapRFileProvider.FS_MAPR_IMPL);
 
       GenericFileName rootName = (GenericFileName) getRootName();
       String url = rootName.getScheme() + "://" + rootName.getHostName().trim();
