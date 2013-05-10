@@ -25,7 +25,7 @@ public class HDFSFileNameParser extends URLFileNameParser {
   private static final HDFSFileNameParser INSTANCE = new HDFSFileNameParser();
 
   public HDFSFileNameParser() {
-    super(9000);
+    super(-1);
   }
 
   public static FileNameParser getInstance() {
