@@ -60,8 +60,14 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
     if (hdfs == null) {
       Configuration conf = new Configuration();
       GenericFileName genericFileName = (GenericFileName) getRootName();
-      String url = "hdfs://" + genericFileName.getHostName() + ":" + genericFileName.getPort();
-      conf.set("fs.default.name", url);
+      StringBuffer urlBuffer = new StringBuffer("hdfs://");
+      urlBuffer.append(genericFileName.getHostName());
+      int port = genericFileName.getPort();
+      if(port >= 0) {
+        urlBuffer.append(":");
+        urlBuffer.append(port);
+      }
+      String url = urlBuffer.toString();conf.set("fs.default.name", url);
 
       String replication = System.getProperty("dfs.replication", "3");
       conf.set("dfs.replication", replication);
