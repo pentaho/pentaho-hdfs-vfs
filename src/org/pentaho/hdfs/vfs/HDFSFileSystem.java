@@ -19,7 +19,11 @@ package org.pentaho.hdfs.vfs;
 
 import java.util.Collection;
 
-import org.apache.commons.vfs.*;
+import org.apache.commons.vfs.FileName;
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSystem;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileSystemOptions;
 import org.apache.commons.vfs.provider.AbstractFileSystem;
 import org.apache.commons.vfs.provider.GenericFileName;
 import org.apache.hadoop.conf.Configuration;
@@ -33,11 +37,13 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
     super(rootName, null, fileSystemOptions);
   }
 
-  @SuppressWarnings("unchecked")
+  @Override
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   protected void addCapabilities(Collection caps) {
     caps.addAll(HDFSFileProvider.capabilities);
   }
 
+  @Override
   protected FileObject createFile(FileName name) throws Exception {
     return new HDFSFileObject(name, this);
   }
@@ -76,6 +82,7 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
       if (genericFileName.getUserName() != null && !"".equals(genericFileName.getUserName())) {
         conf.set("hadoop.job.ugi", genericFileName.getUserName() + ", " + genericFileName.getPassword());
       }
+      setFileSystemOptions( getFileSystemOptions(), conf );
       try {
         hdfs = org.apache.hadoop.fs.FileSystem.get(conf);
       } catch (Throwable t) {
@@ -85,4 +92,13 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
     return hdfs;
   }
 
+  public static void setFileSystemOptions( FileSystemOptions fileSystemOptions, Configuration configuration ) {
+    HDFSFileSystemConfigBuilder hdfsFileSystemConfigBuilder = new HDFSFileSystemConfigBuilder();
+    FileSystemOptions opts = fileSystemOptions;
+    for ( String name : hdfsFileSystemConfigBuilder.getOptions( opts ) ) {
+      if ( hdfsFileSystemConfigBuilder.hasParam( opts, name ) ) {
+        configuration.set( name, String.valueOf( hdfsFileSystemConfigBuilder.getParam( opts, name ) ) );
+      }
+    }
+  }
 }

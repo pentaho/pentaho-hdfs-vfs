@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
+import org.apache.commons.vfs.FileSystemOptions;
 import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.VFS;
 import org.apache.hadoop.conf.Configuration;
@@ -35,6 +36,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pentaho.hdfs.vfs.HDFSFileSystem;
+import org.pentaho.hdfs.vfs.HDFSFileSystemConfigBuilder;
 
 public class HDFSVFSTest {
 
@@ -205,5 +207,21 @@ public class HDFSVFSTest {
     child1.delete();
     child2.delete();
     folder.delete();
+  }
+  
+  @Test
+  public void testSetConfig() {
+    Configuration config = new Configuration();
+    FileSystemOptions opts = new FileSystemOptions();
+    HDFSFileSystemConfigBuilder configBuilder = new HDFSFileSystemConfigBuilder();
+    String option1 = "option1";
+    String value1 = "value1";
+    String option2 = "option2";
+    String value2 = "value2";
+    configBuilder.setParam( opts, option1, value1 );
+    configBuilder.setParam( opts, option2, value2 );
+    HDFSFileSystem.setFileSystemOptions( opts, config );
+    assertEquals( value1, config.get( option1 ) );
+    assertEquals( value2, config.get( option2 ) );
   }
 }

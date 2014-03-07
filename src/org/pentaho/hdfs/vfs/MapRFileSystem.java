@@ -49,7 +49,7 @@ public class MapRFileSystem extends HDFSFileSystem implements FileSystem {
       }
       url += "/";
       conf.set("fs.default.name", url);
-
+      setFileSystemOptions( getFileSystemOptions(), conf );
       try {
         fs = org.apache.hadoop.fs.FileSystem.get(conf);
       } catch (Throwable t) {
