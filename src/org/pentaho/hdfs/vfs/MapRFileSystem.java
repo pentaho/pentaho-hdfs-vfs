@@ -30,14 +30,14 @@ import org.apache.hadoop.conf.Configuration;
  * @author Jordan Ganoff (jganoff@pentaho.com)
  */
 public class MapRFileSystem extends HDFSFileSystem implements FileSystem {
-  private org.apache.hadoop.fs.FileSystem fs;
+  private HadoopFileSystem fs;
 
   public MapRFileSystem(FileName rootName, FileSystemOptions fileSystemOptions) {
     super(rootName, fileSystemOptions);
   }
 
   @Override
-  public org.apache.hadoop.fs.FileSystem getHDFSFileSystem() throws FileSystemException {
+  public HadoopFileSystem getHDFSFileSystem() throws FileSystemException {
     if (fs == null) {
       Configuration conf = new Configuration();
       conf.set("fs.maprfs.impl", MapRFileProvider.FS_MAPR_IMPL);
@@ -51,7 +51,7 @@ public class MapRFileSystem extends HDFSFileSystem implements FileSystem {
       conf.set("fs.default.name", url);
       setFileSystemOptions( getFileSystemOptions(), conf );
       try {
-        fs = org.apache.hadoop.fs.FileSystem.get(conf);
+        fs = new HadoopFileSystemImpl( org.apache.hadoop.fs.FileSystem.get(conf) );
       } catch (Throwable t) {
         throw new FileSystemException("Could not get MapR FileSystem for " + url, t);
       }

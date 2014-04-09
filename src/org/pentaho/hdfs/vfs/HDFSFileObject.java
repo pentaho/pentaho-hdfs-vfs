@@ -30,22 +30,23 @@ import org.apache.commons.vfs.provider.AbstractFileObject;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
 public class HDFSFileObject extends AbstractFileObject implements FileObject {
 
-  private FileSystem hdfs;
+  private HadoopFileSystem hdfs;
 
   protected HDFSFileObject(final FileName name, final HDFSFileSystem fileSystem) throws FileSystemException {
     super(name, fileSystem);
     hdfs = fileSystem.getHDFSFileSystem();
   }
 
+  @Override
   protected long doGetContentSize() throws Exception {
     return hdfs.getFileStatus(new Path(getName().getPath())).getLen();
   }
 
+  @Override
   protected OutputStream doGetOutputStream(boolean append) throws Exception {
     if (append) {
       FSDataOutputStream out = hdfs.append(new Path(getName().getPath()));
@@ -56,11 +57,13 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
     }
   }
 
+  @Override
   protected InputStream doGetInputStream() throws Exception {
     FSDataInputStream in = hdfs.open(new Path(getName().getPath()));
     return in;
   }
 
+  @Override
   protected FileType doGetType() throws Exception {
     FileStatus status = null;
     try {
@@ -77,26 +80,32 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
     }
   }
 
+  @Override
   public void doCreateFolder() throws Exception {
     hdfs.mkdirs(new Path(getName().getPath()));
   }
 
+  @Override
   public void doDelete() throws Exception {
     hdfs.delete(new Path(getName().getPath()), true);
   }
 
+  @Override
   protected void doRename(FileObject newfile) throws Exception {
     hdfs.rename(new Path(getName().getPath()), new Path(newfile.getName().getPath()));
   }
 
+  @Override
   protected long doGetLastModifiedTime() throws Exception {
     return hdfs.getFileStatus(new Path(getName().getPath())).getModificationTime();
   }
 
+  @Override
   protected void doSetLastModifiedTime(long modtime) throws Exception {
     hdfs.setTimes(new Path(getName().getPath()), modtime, System.currentTimeMillis());
   }
 
+  @Override
   protected String[] doListChildren() throws Exception {
     FileStatus[] statusList = hdfs.listStatus(new Path(getName().getPath()));
     String[] children = new String[statusList.length];
