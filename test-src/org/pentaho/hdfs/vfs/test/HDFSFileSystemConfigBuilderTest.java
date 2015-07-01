@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.vfs.FileSystemOptions;
+import org.apache.commons.vfs2.FileSystemOptions;
 import org.junit.Test;
 import org.pentaho.hdfs.vfs.HDFSFileSystemConfigBuilder;
 
