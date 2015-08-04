@@ -22,11 +22,11 @@ import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileType;
-import org.apache.commons.vfs.provider.AbstractFileObject;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileType;
+import org.apache.commons.vfs2.provider.AbstractFileName;
+import org.apache.commons.vfs2.provider.AbstractFileObject;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileStatus;
@@ -36,7 +36,7 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
 
   private HadoopFileSystem hdfs;
 
-  protected HDFSFileObject(final FileName name, final HDFSFileSystem fileSystem) throws FileSystemException {
+  protected HDFSFileObject(final AbstractFileName name, final HDFSFileSystem fileSystem) throws FileSystemException {
     super(name, fileSystem);
     hdfs = fileSystem.getHDFSFileSystem();
   }
@@ -101,8 +101,9 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
   }
 
   @Override
-  protected void doSetLastModifiedTime(long modtime) throws Exception {
+  protected boolean doSetLastModifiedTime(long modtime) throws Exception {
     hdfs.setTimes(new Path(getName().getPath()), modtime, System.currentTimeMillis());
+    return true;
   }
 
   @Override

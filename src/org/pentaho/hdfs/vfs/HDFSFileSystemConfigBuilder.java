@@ -5,15 +5,16 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.vfs.FileSystemConfigBuilder;
-import org.apache.commons.vfs.FileSystemOptions;
+import org.apache.commons.vfs2.FileSystem;
+import org.apache.commons.vfs2.FileSystemConfigBuilder;
+import org.apache.commons.vfs2.FileSystemOptions;
 
 public class HDFSFileSystemConfigBuilder extends FileSystemConfigBuilder {
   private static final String SET_OPTIONS_PARAM = "PENTAHO_SET_OPTIONS";
 
   @Override
-  protected Class<HDFSFileSystemConfigBuilder> getConfigClass() {
-    return HDFSFileSystemConfigBuilder.class;
+  protected Class<? extends FileSystem> getConfigClass() {
+    return FileSystem.class;
   }
 
   @Override

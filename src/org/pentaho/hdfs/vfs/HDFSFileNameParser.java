@@ -17,8 +17,8 @@
 
 package org.pentaho.hdfs.vfs;
 
-import org.apache.commons.vfs.provider.FileNameParser;
-import org.apache.commons.vfs.provider.URLFileNameParser;
+import org.apache.commons.vfs2.provider.FileNameParser;
+import org.apache.commons.vfs2.provider.URLFileNameParser;
 
 public class HDFSFileNameParser extends URLFileNameParser {
 

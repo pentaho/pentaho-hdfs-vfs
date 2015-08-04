@@ -19,13 +19,14 @@ package org.pentaho.hdfs.vfs;
 
 import java.util.Collection;
 
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystem;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileSystemOptions;
-import org.apache.commons.vfs.provider.AbstractFileSystem;
-import org.apache.commons.vfs.provider.GenericFileName;
+import org.apache.commons.vfs2.FileName;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystem;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileSystemOptions;
+import org.apache.commons.vfs2.provider.AbstractFileName;
+import org.apache.commons.vfs2.provider.AbstractFileSystem;
+import org.apache.commons.vfs2.provider.GenericFileName;
 import org.apache.hadoop.conf.Configuration;
 
 public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
@@ -44,7 +45,7 @@ public class HDFSFileSystem extends AbstractFileSystem implements FileSystem {
   }
 
   @Override
-  protected FileObject createFile(FileName name) throws Exception {
+  protected FileObject createFile(AbstractFileName name) throws Exception {
     return new HDFSFileObject(name, this);
   }
 

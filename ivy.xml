@@ -18,7 +18,7 @@
   <dependencies defaultconf="default->default">
 
     <!--  external dependencies -->
-   	<dependency org="commons-vfs" name="commons-vfs" rev="1.0" transitive="true" />
+   	<dependency org="org.apache.commons" name="commons-vfs2" rev="2.0" transitive="true" />
     <dependency org="org.apache.hadoop" name="hadoop-core" rev="0.20.2" transitive="true" >
     	<exclude org="hsqldb" name="hsqldb" />
 	</dependency>

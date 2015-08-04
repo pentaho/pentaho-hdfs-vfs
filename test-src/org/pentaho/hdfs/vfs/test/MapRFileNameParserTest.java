@@ -17,9 +17,9 @@
 
 package org.pentaho.hdfs.vfs.test;
 
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.provider.FileNameParser;
+import org.apache.commons.vfs2.FileName;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.provider.FileNameParser;
 import org.junit.Test;
 import org.pentaho.hdfs.vfs.MapRFileNameParser;
 
