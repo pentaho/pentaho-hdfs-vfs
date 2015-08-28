@@ -24,11 +24,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemManager;
-import org.apache.commons.vfs2.FileSystemOptions;
-import org.apache.commons.vfs2.FileType;
-import org.apache.commons.vfs2.VFS;
+import org.apache.commons.vfs2.*;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
@@ -65,7 +61,7 @@ public class HDFSVFSTest {
   }
 
   public static String buildHDFSURL(String path) {
-    return "hdfs://localhost" + path;
+    return "pentaho-hdfs://localhost" + path;
   }
 
   @Test
@@ -94,23 +90,23 @@ public class HDFSVFSTest {
 
     OutputStream output = file.getContent().getOutputStream();
     IOUtils.write(HELLO_HADOOP_STR, output);
-    IOUtils.closeQuietly(output);
-    assertEquals(FileType.FILE, file.getType());
+    IOUtils.closeQuietly( output );
+    assertEquals( FileType.FILE, file.getType() );
 
-    String fileStr = IOUtils.toString(file.getContent().getInputStream(), "UTF-8");
+    String fileStr = IOUtils.toString( file.getContent().getInputStream(), "UTF-8" );
     assertEquals(HELLO_HADOOP_STR, fileStr);
 
     file.delete();
     file = fsManager.resolveFile(buildHDFSURL("/junit/out.txt"));
-    assertEquals(FileType.IMAGINARY, file.getType());
+    assertEquals( FileType.IMAGINARY, file.getType() );
   }
 
   @Test
   public void deleteFile() throws Exception {
     assertNotNull("FileSystemManager is null", fsManager);
     FileObject file = fsManager.resolveFile(buildHDFSURL("/junit/out.txt"));
-    assertNotNull("File is null (could not resolve?)", file);
-    assertEquals(FileType.IMAGINARY, file.getType());
+    assertNotNull( "File is null (could not resolve?)", file );
+    assertEquals( FileType.IMAGINARY, file.getType() );
 
     OutputStream output = file.getContent().getOutputStream();
     IOUtils.write(HELLO_HADOOP_STR, output);
@@ -138,7 +134,7 @@ public class HDFSVFSTest {
     assertEquals(FileType.FOLDER, folder.getType());
 
     folder = fsManager.resolveFile(buildHDFSURL("/junit/folder"));
-    assertNotNull("File is null (could not resolve?)", folder);
+    assertNotNull( "File is null (could not resolve?)", folder );
     assertEquals(FileType.FOLDER, folder.getType());
     assertEquals(true, folder.delete());
 
@@ -152,22 +148,22 @@ public class HDFSVFSTest {
     assertNotNull("FileSystemManager is null", fsManager);
 
     FileObject file = fsManager.resolveFile(buildHDFSURL("/junit/name.txt"));
-    assertNotNull("File is null (could not resolve?)", file);
-    assertEquals(FileType.IMAGINARY, file.getType());
+    assertNotNull( "File is null (could not resolve?)", file );
+    assertEquals( FileType.IMAGINARY, file.getType() );
 
     OutputStream output = file.getContent().getOutputStream();
     IOUtils.write(HELLO_HADOOP_STR, output);
-    IOUtils.closeQuietly(output);
+    IOUtils.closeQuietly( output );
     assertEquals(FileType.FILE, file.getType());
 
     FileObject renamedFile = fsManager.resolveFile(buildHDFSURL("/junit/renamed.txt"));
     assertNotNull("File is null (could not resolve?)", renamedFile);
-    assertEquals(FileType.IMAGINARY, renamedFile.getType());
+    assertEquals( FileType.IMAGINARY, renamedFile.getType() );
 
-    file.moveTo(renamedFile);
+    file.moveTo( renamedFile );
     renamedFile = fsManager.resolveFile(buildHDFSURL("/junit/renamed.txt"));
     assertNotNull("File is null (could not resolve?)", renamedFile);
-    assertEquals(FileType.FILE, renamedFile.getType());
+    assertEquals( FileType.FILE, renamedFile.getType() );
     assertEquals(true, renamedFile.delete());
   }
 
