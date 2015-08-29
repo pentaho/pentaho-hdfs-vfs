@@ -32,7 +32,7 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;
 
-public class HDFSFileObject extends AbstractFileObject implements FileObject {
+public class HDFSFileObject extends AbstractFileObject {
 
   private HadoopFileSystem hdfs;
 
