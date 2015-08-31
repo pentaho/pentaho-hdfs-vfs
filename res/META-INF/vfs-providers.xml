@@ -1,6 +1,6 @@
 <providers>
   <provider class-name="org.pentaho.hdfs.vfs.HDFSFileProvider">
-    <scheme name="pentaho-hdfs"/>
+    <scheme name="hdfs"/>
     <if-available class-name="org.apache.hadoop.fs.FileSystem"/>
   </provider>
 
