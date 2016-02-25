@@ -19,8 +19,6 @@ package org.pentaho.hdfs.vfs;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileObject;
@@ -67,7 +65,7 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
   protected FileType doGetType() throws Exception {
     FileStatus status = null;
     try {
-      status = hdfs.getFileStatus(new Path(URLDecoder.decode(getName().getPath(), "UTF-8").replaceAll(" ", "+")));
+      status = hdfs.getFileStatus(new Path(getName().getPath()));
     } catch (Exception ex) {
     }
 
@@ -110,7 +108,7 @@ public class HDFSFileObject extends AbstractFileObject implements FileObject {
     FileStatus[] statusList = hdfs.listStatus(new Path(getName().getPath()));
     String[] children = new String[statusList.length];
     for (int i = 0; i < statusList.length; i++) {
-      children[i] = URLEncoder.encode(statusList[i].getPath().getName(), "UTF-8");
+      children[i] = statusList[i].getPath().getName();
     }
     return children;
   }
