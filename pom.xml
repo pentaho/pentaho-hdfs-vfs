@@ -30,7 +30,7 @@
     <!-- License Configuration -->
     <license.licenseName>apache_v2</license.licenseName>
 
-    <commons-vfs2.version>2.1-20150824</commons-vfs2.version>
+    <commons-vfs2.version>2.2</commons-vfs2.version>
     <hadoop-core.version>0.20.2</hadoop-core.version>
 
     <!-- Test dependencies -->
