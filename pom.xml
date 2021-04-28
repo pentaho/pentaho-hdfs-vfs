@@ -34,7 +34,7 @@
 
     <!-- Test dependencies -->
     <hadoop-test.version>0.20.2</hadoop-test.version>
-    <commons-io.version>1.4</commons-io.version>
+    <commons-io.version>2.7</commons-io.version>
     <powermock.version>1.7.3</powermock.version>
   </properties>
 
