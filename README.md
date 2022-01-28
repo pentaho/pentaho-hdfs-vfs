@@ -2,7 +2,7 @@
 _HDFS VFS Driver_
 
 * Maven, version 3+
-* Java JDK 1.8
+* Java JDK 11
 * This [settings.xml](https://github.com/pentaho/maven-parent-poms/blob/master/maven-support-files/settings.xml) in your \<user-home\>/.m2 directory
 
 
