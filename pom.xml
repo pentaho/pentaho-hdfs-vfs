@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>pentaho</groupId>
   <artifactId>pentaho-hdfs-vfs</artifactId>
-  <version>9.6.0.0-SNAPSHOT-15</version>
+  <version>9.6.0.0-SNAPSHOT-16</version>
   <packaging>jar</packaging>
 
   <parent>
