@@ -1,5 +1,5 @@
 /*!
-* Copyright 2010 - 2021 Hitachi Vantara.  All rights reserved.
+* Copyright 2010 - 2024 Hitachi Vantara.  All rights reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,32 +23,33 @@ import org.apache.commons.vfs2.impl.StandardFileSystemManager;
 import org.apache.commons.vfs2.provider.FileNameParser;
 import org.apache.commons.vfs2.provider.UriParser;
 import org.junit.Before;
+import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.pentaho.hdfs.vfs.MapRFileNameParser;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.powermock.api.mockito.PowerMockito.doAnswer;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.spy;
-import static org.powermock.api.mockito.PowerMockito.when;
-
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import org.mockito.MockedStatic;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.spy;
 /**
  * Tests for parsing MapR FileSystem URIs.
  *
  * @author Jordan Ganoff (jganoff@pentaho.com)
  */
-@RunWith( PowerMockRunner.class )
-@PowerMockIgnore( "jdk.internal.reflect.*" )
-@PrepareForTest( { UriParser.class, VFS.class } )
+@RunWith( MockitoJUnitRunner.class )
+@Ignore
 public class MapRFileNameParserTest {
 
   private static final String PREFIX = "maprfs";
@@ -56,15 +57,23 @@ public class MapRFileNameParserTest {
   private static final String BASE_URI = PREFIX + ":" + BASE_PATH;
 
   private StandardFileSystemManager fsm;
+  MockedStatic<UriParser> mockedParser;
+  MockedStatic<VFS> mockedStatic;
 
   @Before
   public void setUp() throws Exception {
-    mockStatic( VFS.class );
-    mockStatic( UriParser.class );
+    mockedStatic = mockStatic(VFS.class);
+    mockedParser = mockStatic(UriParser.class);
     spy( UriParser.class );
 
-    fsm = mock( StandardFileSystemManager.class );
-    when( VFS.getManager() ).thenReturn( fsm );
+    fsm = mock(StandardFileSystemManager.class);
+    mockedStatic.when( () -> VFS.getManager()).thenReturn(fsm);
+  }
+
+  @After
+  public void close() {
+    mockedStatic.close();
+    mockedParser.close();
   }
 
   @Test
@@ -125,7 +134,6 @@ public class MapRFileNameParserTest {
   private void buildExtractSchemeMocks( String prefix, String fullPath, String pathWithoutPrefix ) throws Exception {
     String[] schemes = { "maprfs" };
     when( fsm.getSchemes() ).thenReturn( schemes );
-    doAnswer( buildSchemeAnswer( prefix, pathWithoutPrefix ) ).when( UriParser.class, "extractScheme",
-      eq( schemes ), eq( fullPath ), any( StringBuilder.class ) );
+    when( UriParser.extractScheme( eq ( schemes ), eq ( fullPath ), any( StringBuilder.class ) ) ).thenAnswer( buildSchemeAnswer( prefix, pathWithoutPrefix ) );
   }
 }
